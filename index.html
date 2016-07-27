@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DevExtreme with Webpack and Knockout example</title>
+    <link rel="stylesheet" type="text/css" href="node_modules/devextreme/dist/css/dx.spa.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/devextreme/dist/css/dx.common.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/devextreme/dist/css/dx.light.css" />
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <!-- When using jQuery in an electron app, we need to unregister a couple of globals so the 
+    jQuery ones can be registered properly -->
+    <script>
+        window.nodeRequire = require;
+        delete window.require;
+        delete window.exports;
+        delete window.module;
+    </script>
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="node_modules/knockout/build/output/knockout-latest.js"></script>
+    <script type="text/javascript" src="node_modules/devextreme/dist/js/dx.all.js"></script>
+
+    <script type="text/javascript" src="index.js"></script>
+
+    <!-- Layouts (use this from local folder and not modules.) -->
+    <link rel="stylesheet" type="text/css" href="layouts/Desktop/DesktopLayout.css" />
+    <link rel="dx-template" type="text/html" href="layouts/Desktop/DesktopLayout.html" />
+    <script type="text/javascript" src="layouts/Desktop/DesktopLayout.js"></script>
+
+    <!-- Views -->
+    <link rel="dx-template" type="text/html" href="views/about.html" />
+    <link rel="dx-template" type="text/html" href="views/info.html" />
+</head>
+
+<body>
+    <div class="dx-viewport"></div>
+</body>
+
+</html>

@@ -11,13 +11,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        // "angular": "^1.5.8",
-        // "angular-sanitize": "^1.5.8",
-        // "cldr-data": "^29.0.1",
         "devextreme": "^16.1.4",
-        // "globalize": "^1.1.1",
         "jquery": "^2.2.3",
-        // "jszip": "^3.0.0",
         "knockout": "^3.4.0"
     },
     "devDependencies": {

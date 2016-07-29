@@ -1,14 +1,14 @@
 $(function() {
-    var startupView = "About";
-    window.dxdon = window.dxdon || {};
+    var startupView = "Tasks";
+    window.dxdon = dxdon || {};
     //window.dxdon.db = require()
     DevExpress.devices.current("desktop");
 
     var layoutSet = DevExpress.framework.html.layoutSets["desktop"],
         animation = DevExpress.framework.html.animationSets["slide"],
         navigation = [{
-            "title": "About",
-            "onExecute": "#About",
+            "title": "Tasks",
+            "onExecute": "#Tasks",
             "icon": "info"
         }, {
             "title": "Info",

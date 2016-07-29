@@ -12,6 +12,8 @@
         //because of electron, we need to include jQuery slightly different
         window.$ = window.jQuery = require("jquery");
         window.ko = require("knockout");
+
+        var dxdon = dxdon || {};
     </script>
     <script type="text/javascript" src="node_modules/devextreme/dist/js/dx.all.js"></script>
     <script type="text/javascript" src="js/db.js"></script>
@@ -23,6 +25,8 @@
     <script type="text/javascript" src="layouts/Desktop/DesktopLayout.js"></script>
 
     <!-- Views -->
+    <link rel="dx-template" type="text/html" href="views/tasks.html" />
+    <script type="text/javascript" src="views/tasks.js"></script>
     <link rel="dx-template" type="text/html" href="views/about.html" />
     <link rel="dx-template" type="text/html" href="views/info.html" />
 </head>

@@ -1,0 +1,11 @@
+<div data-options="dxView : { name: 'Tasks', title: 'Tasks', pane: 'master' } ">
+    <!--<div data-bind="dxCommand: { onExecute: '#TaskEdit', root: openCreateViewAsRoot, id: 'create', title: 'New', icon: 'plus', modal: true }"></div>
+    <div data-bind="dxCommand: { onExecute: refreshList, id: 'refresh', title: 'Refresh', icon: 'refresh' }"></div>-->
+    <div data-options="dxContent : { targetPlaceholder: 'content' } " class="dx-list-view dx-content-background" data-bind="dxDeferRendering: { showLoadIndicator: true, staggerItemSelector: '.dx-list-item', animation: 'list-item-rendered', renderWhen: isReady }">
+        <div data-bind="dxList: { dataSource: dataSource, pullRefreshEnabled: true }">
+            <div data-bind="dxAction: '#TaskDetails/{id}'" data-options="dxTemplate : { name: 'item' } ">
+                <div class="list-item" data-bind="text: Description"></div>
+            </div>
+        </div>
+    </div>
+</div>

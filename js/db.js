@@ -13,30 +13,36 @@ function db() {
         sqlite.connect(databaseFile);
         this.database = sqlite;
     }
+    // initialize db structure
+
+    this.database.run("CREATE TABLE IF NOT EXISTS todo (id INTEGER PRIMARY KEY AUTOINCREMENT, duedate DATETIME, priority INT, description TEXT NOT NULL);",
+        function(res) {
+            if (res.error)
+                throw res.error;
+            console.log(res);
+        });
 }
 
 db.prototype.database = null;
 db.prototype.config = null;
 
-// db.prototype.menu = function() {
-// 	return this.database.run("SELECT route, name FROM crud WHERE show_menu = 1 AND ativo = 1");
-// };
+db.prototype.getTasks = function() {
+    var result = this.database.run("SELECT id, duedate, priority, description FROM todo");
+    return result;
+}
 
-// db.prototype.routes = function(){
-// 	var res = this.database.run("SELECT * FROM crud WHERE ativo = 1");
-// 	var ret = [];
-// 	for(i in res){
-// 		ret.push({
-// 			when: '/'+res[i].route,
-// 			data:{
-// 				controller: res[i].controller,
-// 				templateUrl: 'views/'+res[i].view,
-// 				isFree: true
-// 			}
-// 		});
-// 	}
-// 	return ret;
-// }
+db.prototype.insertTask = function(t) {
+    return this.database.run("INSERT INTO todo (duedate, priority, description) VALUES (?,?,?)", [t.duedate, t.priority, t.task, t.id]);
+}
+
+db.prototype.updateTask = function(t) {
+    this.database.update("UPDATE todo SET duedate = ?, priority = ?, description = ? WHERE id = ?", [t.duedate, t.priority, t.task, t.id]);
+}
+
+db.prototype.updateTask = function(t) {
+    this.database.run("DELETE FROM todo WHERE id = ?", [t.id]);
+}
+
 
 // Exporting module
 module.exports = new db();

@@ -1,6 +1,7 @@
 $(function() {
     var startupView = "About";
     window.dxdon = window.dxdon || {};
+    //window.dxdon.db = require()
     DevExpress.devices.current("desktop");
 
     var layoutSet = DevExpress.framework.html.layoutSets["desktop"],

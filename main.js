@@ -1,29 +1,29 @@
 const electron = require('electron');
 // Module to control application life.
-const { app } = electron;
+const app = electron.app;
 // Module to create native browser window.
-const { BrowserWindow } = electron;
+const BrowserWindow = electron.BrowserWindow;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win;
+let mainWnd;
 
 function createWindow() {
     // Create the browser window.
-    win = new BrowserWindow({ width: 1024, height: 800 });
+    mainWnd = new BrowserWindow({ width: 1200, height: 700 });
 
     // and load the index.html of the app.
-    win.loadURL(`file://${__dirname}/index.html`);
+    mainWnd.loadURL(`file://${__dirname}/index.html`);
 
     // Open the DevTools.
-    win.webContents.openDevTools();
+    mainWnd.webContents.openDevTools();
 
     // Emitted when the window is closed.
-    win.on('closed', () => {
+    mainWnd.on('closed', () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
-        win = null;
+        mainWnd = null;
     });
 }
 
@@ -44,10 +44,8 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (win === null) {
+    if (mainWnd === null) {
         createWindow();
     }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

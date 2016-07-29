@@ -7,18 +7,14 @@
     <link rel="stylesheet" type="text/css" href="node_modules/devextreme/dist/css/dx.common.css" />
     <link rel="stylesheet" type="text/css" href="node_modules/devextreme/dist/css/dx.light.css" />
     <link rel="stylesheet" type="text/css" href="index.css" />
-    <!-- When using jQuery in an electron app, we need to unregister a couple of globals so the 
-    jQuery ones can be registered properly -->
-    <script>
-        window.nodeRequire = require;
-        delete window.require;
-        delete window.exports;
-        delete window.module;
-    </script>
-    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="node_modules/knockout/build/output/knockout-latest.js"></script>
-    <script type="text/javascript" src="node_modules/devextreme/dist/js/dx.all.js"></script>
 
+    <script>
+        //because of electron, we need to include jQuery slightly different
+        window.$ = window.jQuery = require("jquery");
+        window.ko = require("knockout");
+    </script>
+    <script type="text/javascript" src="node_modules/devextreme/dist/js/dx.all.js"></script>
+    <script type="text/javascript" src="js/db.js"></script>
     <script type="text/javascript" src="index.js"></script>
 
     <!-- Layouts (use this from local folder and not modules.) -->

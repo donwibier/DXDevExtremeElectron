@@ -29,24 +29,39 @@ function db() {
 db.prototype.database = null;
 db.prototype.config = null;
 
-db.prototype.Tasks = function() {
+db.prototype.where = function(arr, sqlArray, paramsArray) {
+    arr.forEach(function(c, i, a) {
+        if (Array.isArray(c) && (c.length === 3)) {
+            sqlArray.push("(" + c[0] + " " + (c[1] === 'contains' ? 'LIKE' : c[1]) + " ?)");
+            paramsArray.push((c[2] instanceof Date) ? c[2].toISOString() : c[2]);
+        } else if ((i == 1) && (c === "contains")) {
+            sqlArray.push("LIKE");
+        } else if (i === 2) {
+            if (typeof c === "string") {
+                sqlArray.push("'" + c + "'");
+            } else {
+                sqlArray.push("?");
+                paramsArray.push((c instanceof Date) ? c.toISOString() : c);
+            }
+        } else {
+            sqlArray.push(c);
+        }
+    });
+}
 
+db.prototype.createStore = function(tableName, keyfieldName, insertEvent, updateEvent) {
     var me = this,
         options = new DevExpress.data.CustomStore({
             load: function(options) {
                 //debugger;
                 var d = $.Deferred(),
-                    sql = ["SELECT *", "FROM todo"];
+                    sql = ["SELECT *", "FROM", tableName],
+                    sqlParams = [];
 
                 /*TODO: Add sql options */
                 if (options.filter && options.filter.length > 0) {
-                    sql.push("WHERE " + options.filter.map(function(c, i, a) {
-                        if (typeof c === "object" && c.length) {
-                            return (typeof c[2] === 'string') ? c[0] + " " + c[1] + " '" + c[2] + "'" : c.join(" ");
-                        } else {
-                            return c;
-                        }
-                    }).join(" "));
+                    sql.push("WHERE");
+                    me.where(options.filter, sql, sqlParams);
                 }
 
                 if (options.sort && options.sort.length > 0) {
@@ -59,7 +74,7 @@ db.prototype.Tasks = function() {
                 if (options.skip > 0)
                     sql.push("OFFSET " + options.skip);
 
-                me.database.runAsync(sql.join(" "),
+                me.database.runAsync(sql.join(" "), sqlParams,
                     function(rows) {
                         d.resolve(rows);
                     });
@@ -67,18 +82,15 @@ db.prototype.Tasks = function() {
             },
             totalCount: function(options) {
                 var d = $.Deferred(),
-                    sql = ["SELECT *", "FROM todo"];
-                /*TODO: Add sql options */
+                    sql = ["SELECT *", "FROM", tableName],
+                    sqlParams = [];
+
                 if (options.filter && options.filter.length > 0) {
-                    sql.push("WHERE " + options.filter.map(function(c, i, a) {
-                        if (typeof c === "object" && c.length) {
-                            return (typeof c[2] === 'string') ? c[0] + " " + c[1] + " '" + c[2] + "'" : c.join(" ");
-                        } else {
-                            return c;
-                        }
-                    }).join(" "));
+                    sql.push("WHERE");
+                    me.where(options.filter, sql, sqlParams);
                 }
-                me.database.runAsync(sql.join(" "),
+
+                me.database.runAsync(sql.join(" "), sqlParams,
                     function(rows) {
                         d.resolve(rows);
                     });
@@ -86,7 +98,7 @@ db.prototype.Tasks = function() {
             },
             byKey: function(key) {
                 var d = $.Deferred(),
-                    sql = "SELECT * FROM todo WHERE id = " + key;
+                    sql = "SELECT * FROM " + tableName + " WHERE " + keyfieldName + " = " + key;
                 me.database.runAsync(sql,
                     function(rows) {
                         d.resolve(rows);
@@ -95,37 +107,29 @@ db.prototype.Tasks = function() {
             },
             insert: function(values) {
                 var d = $.Deferred();
-                me.database.insert("todo", {
-                        duedate: values.duedate,
-                        priority: values.priority,
-                        description: values.description
-                    },
+                me.database.insert(tableName, insertEvent,
                     function(res) {
                         console.log(res);
                         if (res.error)
                             throw res.error;
-                        d.resolve(me.database.run("SELECT * FROM todo WHERE id = ?", res));
+                        d.resolve(me.database.run("SELECT * FROM " + tableName + " WHERE " + keyfieldName + " = ?", res));
                     });
                 return d.promise();
             },
             update: function(key, values) {
                 var d = $.Deferred();
-                me.database.update("todo", {
-                        duedate: values.duedate,
-                        priority: values.priority,
-                        description: values.description
-                    }, key,
+                me.database.update(tableName, updateEvent, key,
                     function(res) {
                         console.log(res);
                         if (res.error)
                             throw res.error;
-                        d.resolve(me.database.run("SELECT * FROM todo WHERE id = ?", res));
+                        d.resolve(me.database.run("SELECT * FROM " + tableName + " WHERE " + keyfieldName + " = ?", res));
                     });
                 return d.promise();
             },
             remove: function(key) {
                 var d = $.Deferred(),
-                    sql = "DELETE * FROM todo WHERE id = " + key;
+                    sql = "DELETE FROM " + tableName + " WHERE " + keyfieldName + " = " + key;
                 me.database.runAsync(sql,
                     function(id) {
                         d.resolve(id);
@@ -134,7 +138,26 @@ db.prototype.Tasks = function() {
             }
         });
 
-    return new DevExpress.data.DataSource(options);
+
+    return options;
+}
+
+db.prototype.Tasks = function() {
+    return new DevExpress.data.DataSource(this.createStore("todo", "id",
+        function(values) {
+            return {
+                duedate: new Date(values.duedate).toISOString(),
+                priority: values.priority,
+                description: values.description
+            }
+        },
+        function(key, values) {
+            return {
+                duedate: new Date(values.duedate).toISOString(),
+                priority: values.priority,
+                description: values.description
+            }
+        }));
 }
 
 // Exporting module

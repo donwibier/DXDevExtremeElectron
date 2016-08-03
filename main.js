@@ -16,7 +16,7 @@ function createWindow() {
     mainWnd.loadURL(`file://${__dirname}/index.html`);
 
     // Open the DevTools.
-    mainWnd.webContents.openDevTools();
+    //mainWnd.webContents.openDevTools();
 
     // Emitted when the window is closed.
     mainWnd.on('closed', () => {
@@ -48,4 +48,3 @@ app.on('activate', () => {
         createWindow();
     }
 });
-

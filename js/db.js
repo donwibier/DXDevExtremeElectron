@@ -107,8 +107,9 @@ db.prototype.createStore = function(tableName, keyfieldName, insertEvent, update
                 return d.promise();
             },
             insert: function(values) {
-                var d = $.Deferred();
-                me.database.insert(tableName, insertEvent,
+                var d = $.Deferred(),
+                    data = insertEvent(values);
+                me.database.insert(tableName, data,
                     function(res) {
                         console.log(res);
                         if (res.error)
@@ -117,14 +118,15 @@ db.prototype.createStore = function(tableName, keyfieldName, insertEvent, update
                     });
                 return d.promise();
             },
-            update: function(key, values) {
-                var d = $.Deferred();
-                me.database.update(tableName, updateEvent, key,
+            update: function(oldValues, newValues) {
+                var d = $.Deferred(),
+                    data = updateEvent(newValues);
+                me.database.update(tableName, data, { id: oldValues.id},
                     function(res) {
                         console.log(res);
                         if (res.error)
                             throw res.error;
-                        d.resolve(me.database.run("SELECT * FROM " + tableName + " WHERE " + keyfieldName + " = ?", res));
+                        d.resolve(me.database.run("SELECT * FROM " + tableName + " WHERE " + keyfieldName + " = ?", oldValues.id));
                     });
                 return d.promise();
             },
@@ -152,12 +154,12 @@ db.prototype.Tasks = function() {
                 description: values.description
             }
         },
-        function(key, values) {
-            return {
-                duedate: new Date(values.duedate).toISOString(),
-                priority: values.priority,
-                description: values.description
+        function(values) {
+            var result = [];
+            for (var p in values){
+                result[p] = (p === "duedate") ? new Date(values[p]).toISOString():values[p];
             }
+            return result;
         }));
 }
 

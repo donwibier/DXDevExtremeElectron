@@ -1,4 +1,4 @@
-dxdon.Tasks = function(params, viewInfo) {
+dxapp.Tasks = function(params, viewInfo) {
     "use strict";
     var path = require('path'),
         d = require(path.join(process.cwd(), 'js/db.js')),

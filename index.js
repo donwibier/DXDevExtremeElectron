@@ -1,5 +1,7 @@
+var $ = window.$ = window.jQuery = require("jquery");
 $(function() {
     var startupView = "Tasks";
+    
     window.dxdon = dxdon || {};
     //window.dxdon.db = require()
     DevExpress.devices.current("desktop");

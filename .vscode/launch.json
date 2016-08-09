@@ -11,7 +11,8 @@
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
         "runtimeArgs": [
             ".",
-            "--enable-logging"
+            "--enable-logging",
+            "--debug-brk=5858"
         ],
         "env": {},
         "externalConsole": false,

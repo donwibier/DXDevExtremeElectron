@@ -4,7 +4,10 @@ var path = require('path');
 function db() {
 
     this.config = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'app.json')));
-    var databaseFile = (this.config.database.split('\\')).length == 1 ? path.join(process.cwd(), 'model', this.config.database + '.db') : this.config.database;
+    var databaseFile = (this.config.database.split('\\')).length == 1 ? 
+        path.join(require('electron').remote.getGlobal('settings').databaseFolder, this.config.database + '.db') : 
+        this.config.database;
+
     if (this.config.cipher) {
         var sqlite = require('sqlite-cipher');
         sqlite.connect(databaseFile, this.config.password, this.config.algorithm);

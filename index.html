@@ -10,7 +10,7 @@
 
     <script>
         //because of electron, we need to include jQuery slightly different
-        var $ = window.$ = window.jQuery = require("jquery");
+        window.$ = window.jQuery = require("jquery");
         window.ko = require("knockout");
 
         var dxdon = dxdon || {};

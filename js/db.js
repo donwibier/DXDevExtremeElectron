@@ -1,7 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-//var dx = require(path.join(process.cwd(), 'node_modules/devextreme/dist/js/dx.all.js'));
-
 
 function db() {
 

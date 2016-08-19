@@ -1,8 +1,9 @@
-var $ = window.$ = window.jQuery = require("jquery");
+// var $ = require("jquery"),
+//     jQuery = $;
 $(function() {
     var startupView = "Tasks";
     
-    window.dxapp = dxapp || {};
+    //window.dxapp = dxapp || {};
     DevExpress.devices.current("desktop");
 
     var layoutSet = DevExpress.framework.html.layoutSets["desktop"],
@@ -35,9 +36,9 @@ $(function() {
         document.title = ko.unwrap(args.viewInfo.model.title) || "DevExtreme";
     });
 
-    $(window).unload(function() {
-        dxapp.app.saveState();
-    });
+    // $(window).unload(function() {
+    //     dxapp.app.saveState();
+    // });
 
     dxapp.app.router.register(":view/:id", { view: startupView, id: undefined });
     dxapp.app.navigate();

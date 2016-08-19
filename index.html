@@ -7,40 +7,30 @@
     <link rel="stylesheet" type="text/css" href="./node_modules/devextreme/dist/css/dx.common.css" />
     <link rel="stylesheet" type="text/css" href="./node_modules/devextreme/dist/css/dx.light.css" />
     <link rel="stylesheet" type="text/css" href="./index.css" />
-
-    <script>
-        //because of electron, we need to include jQuery slightly different
-        window.$ = window.jQuery = require("jquery");
-        window.ko = require("knockout");
-
-        var dxapp = dxapp || {};
-
-        require("./node_modules/devextreme/dist/js/dx.all.js");
-        require("./js/db.js");
-        require("./index.js");
-    </script>
-    <!--<script type="text/javascript" src="node_modules/devextreme/dist/js/dx.all.js"></script>
-    <script type="text/javascript" src="js/db.js"></script>
-    <script type="text/javascript" src="index.js"></script>-->
-
     <!-- Layouts (use this from local folder and not modules.) -->
     <link rel="stylesheet" type="text/css" href="./layouts/Desktop/DesktopLayout.css" />
     <link rel="dx-template" type="text/html" href="./layouts/Desktop/DesktopLayout.html" />
-    <script>
-      require("./layouts/Desktop/DesktopLayout.js");
-    </script>
-    <!-- <script type="text/javascript" src="layouts/Desktop/DesktopLayout.js"></script> -->
-
     <!-- Views -->
     <link rel="dx-template" type="text/html" href="./views/tasks.html" />
-    <!-- <script type="text/javascript" src="views/tasks.js"></script> -->
-    <script>require("./views/tasks.js");</script>
+    
     <link rel="dx-template" type="text/html" href="./views/about.html" />
     <link rel="dx-template" type="text/html" href="./views/info.html" />
 </head>
 
 <body>
     <div class="dx-viewport"></div>
+    <script>
+        //because of electron, we need to include jQuery slightly different
+        window.$ = window.jQuery = require("jquery");
+        window.ko = require("knockout");
+        var dxapp = dxapp || {};
+
+        require("./node_modules/devextreme/dist/js/dx.all.js");
+        require("./layouts/Desktop/DesktopLayout.js");
+        require("./js/db.js");
+        require("./index.js");
+        require("./views/tasks.js");
+    </script>
 </body>
 
 </html>
